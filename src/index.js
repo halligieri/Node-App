@@ -1,6 +1,8 @@
 const express = require('express');
 const path = require('path');
 const exphbs = require('express-handlebars');
+const methodOverride = require('method-override');
+const session = require('express-session');
 
 //Initializacions
 const app = express();
@@ -17,10 +19,21 @@ app.engine('.hbs',exphbs({
 app.set('view engine', '.hbs');
 
 //middelwares
+app.use(express.urlencoded({extended:false}));
+app.use(methodOverride('_method'));
+app.use(session({
+    secret: 'mysecretapp',
+    resave: true,
+    saveUnitialized: true
+
+}));
 
 //Golbal Variables
 
 //Routes
+app.use(require('./routes/index'));
+app.use(require('./routes/notes'));
+app.use(require('./routes/users'));
 
 //Statics Files
 
